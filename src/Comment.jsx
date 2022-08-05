@@ -18,8 +18,8 @@ const Comment = () => {
         <h4 className="comment_content">예시/내용입니다</h4>
 
         <div className="edit_buttons">
-          <button>수정</button>
-          <button>삭제</button>
+          <button>수정ss</button>
+          <button>삭제ss</button>
         </div>
       </div>
     </div>
