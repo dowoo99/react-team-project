@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { __getTodos, __deleteTodos } from "./redux/modules/todosSlice";
 
 const List = () => {
+  const dispatch = useDispatch();
+  const todosList = useSelector((state) => state.todos.todos);
+  console.log(todosList);
+  const [todo, Settodo] = useState({
+    id: "",
+    name: "",
+    title: "",
+    body: "",
+  });
+  console.log(todosList);
   const navigation = useNavigate();
+  useEffect(() => {
+    dispatch(__getTodos());
+  }, [dispatch]);
+  const onClickDeleteHandler = (id) => {
+    dispatch(__deleteTodos(id));
+  };
   return (
     <Lists>
       <HeaderList>
-        <div>ToDO List</div>
+        <div>ToDo List</div>
         <div
           onClick={() => {
             navigation("/");
@@ -17,33 +35,29 @@ const List = () => {
         </div>
       </HeaderList>
       <FlexBox>
-        <div>
-          <LowBox>
-            <div
-              onClick={() => {
-                navigation("/detail");
-              }}
-            >
-              1 <button>삭제</button>
-            </div>
-            <div>
-              2 <button>삭제</button>
-            </div>
-            <div>
-              3 <button>삭제</button>
-            </div>
-          </LowBox>
-          <LowBox>
-            <div>
-              4 <button>삭제</button>
-            </div>
-            <div>
-              5 <button>삭제</button>
-            </div>
-            <div>
-              6 <button>삭제</button>
-            </div>
-          </LowBox>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {todosList.map((todos) => {
+            if (todos.length !== 0) {
+              return (
+                <div key={todos.id}>
+                  <LowBox
+                    onClick={() => {
+                      navigation(`/detail/${todos.id}`);
+                    }}
+                  >
+                    <div>1{todos.title}</div>
+                  </LowBox>
+                  <button
+                    onClick={() => {
+                      onClickDeleteHandler(todos.id);
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              );
+            }
+          })}
         </div>
       </FlexBox>
     </Lists>
@@ -60,22 +74,21 @@ const HeaderList = styled.div`
 `;
 const FlexBox = styled.div`
   display: flex;
+
   padding: 40px;
   justify-content: center;
   align-items: center;
 `;
 const LowBox = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  flex-wrap: wrap;
   & > div {
     width: 350px;
     height: 400px;
     border: 1px solid black;
     margin: 50px 50px;
-    & > button {
-      float: right;
-      margin: 20px;
-    }
+    background-color: aliceblue;
   }
 `;
 export default List;

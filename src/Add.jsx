@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import Buttons from "./ele/Button";
 const Add = () => {
   const naviation = useNavigate();
   const [modal, Setmodal] = useState(false);
   return (
     <div>
+      <Buttons>asdsa</Buttons>
       <button
         onClick={() => {
           naviation("/list");
@@ -20,6 +22,7 @@ const Add = () => {
       >
         +
       </button>
+
       <div>{modal === true ? <Modal Setmodal={Setmodal}></Modal> : null}</div>
     </div>
   );
