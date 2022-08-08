@@ -12,16 +12,22 @@ const Modal = ({ Setmodal }) => {
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     setTodos({ ...todos, [name]: value });
-    console.log(todos);
   };
   const onSubmitHandler = (event) => {
     event.preventDefault();
+    if (
+      todos.name.trim() === "" ||
+      todos.title.trim() === "" ||
+      todos.body.trim() === ""
+    ) {
+      return alert("모든 항목을 입력해주세요.");
+    }
     dispatch(__postTodos({ ...todos }));
     setTodos({
-      id: "",
       name: "",
       title: "",
       body: "",
+      id: "",
     });
   };
   return (

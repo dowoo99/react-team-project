@@ -1,15 +1,11 @@
 import axios from "axios"; // axios import 합니다.
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
-  todos: [
-    {
-      id: "",
-      name: "",
-      title: "",
-      body: "",
-    },
-  ],
+  todos: [],
+  todo: {},
+  isLoading: false,
+  error: null,
 };
 
 export const __postTodos = createAsyncThunk(
@@ -17,6 +13,7 @@ export const __postTodos = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.post("http://localhost:3001/todos", payload);
+      console.log(data, payload);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -28,6 +25,33 @@ export const __getTodos = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.get("http://localhost:3001/todos");
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const __getDetail = createAsyncThunk(
+  "todos/getDetail",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await axios.get(`http://localhost:3001/todos/${payload}`);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const __editDetail = createAsyncThunk(
+  "todos/editDetail",
+  async (payload, thunkAPI) => {
+    console.log(payload);
+    try {
+      const data = await axios.patch(
+        `http://localhost:3001/todos/${payload.id}`,
+        payload.detailTodo
+      );
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -39,6 +63,7 @@ export const __deleteTodos = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.delete(`http://localhost:3001/todos/${payload}`);
+
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -53,29 +78,64 @@ export const todosSlice = createSlice({
   extraReducers: {
     [__postTodos.pending]: (state) => {},
     [__postTodos.fulfilled]: (state, action) => {
-      state.todos = action.payload;
-      console.log(state, action);
+      state.todos.push(action.payload);
+      console.log(current(state), action);
     },
     [__postTodos.rejected]: (state, action) => {
       state.error = action.payload;
-      console.log(state, action);
     },
-    [__getTodos.pending]: (state) => {},
+    [__getTodos.pending]: (state) => {
+      state.isLoading = true;
+    },
     [__getTodos.fulfilled]: (state, action) => {
+      state.isLoading = false;
       state.todos = action.payload;
-      console.log(state, action);
+      console.log(action);
     },
     [__getTodos.rejected]: (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
-      console.log(state, action);
+    },
+    [__getTodos.pending]: (state) => {
+      state.isLoading = true;
     },
     [__deleteTodos.fulfilled]: (state, action) => {
-      const target = state.todos.id.findIndex(
-        (todos) => todos.id === action.payload
+      state.isLoading = false;
+      const target = state.todos.findIndex(
+        (comment) => comment.id === action.payload
       );
-      state.todos.data.splice(target, 1);
+      state.todos.splice(target, 1);
     },
     [__deleteTodos.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [__getDetail.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__getDetail.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.todo = action.payload;
+    },
+    [__getDetail.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [__editDetail.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__editDetail.pending]: (state) => {
+      state.isLoading = true;
+    },
+
+    [__editDetail.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log(action);
+      // state.todos = action.payload;
+      state.todos.push(action.payload);
+    },
+    [__editDetail.rejected]: (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     },
   },

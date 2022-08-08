@@ -6,15 +6,7 @@ import { __getTodos, __deleteTodos } from "./redux/modules/todosSlice";
 
 const List = () => {
   const dispatch = useDispatch();
-  const todosList = useSelector((state) => state.todos.todos);
-  console.log(todosList);
-  const [todo, Settodo] = useState({
-    id: "",
-    name: "",
-    title: "",
-    body: "",
-  });
-  console.log(todosList);
+  const { todos, isLoding, eror } = useSelector((state) => state.todos);
   const navigation = useNavigate();
   useEffect(() => {
     dispatch(__getTodos());
@@ -36,27 +28,29 @@ const List = () => {
       </HeaderList>
       <FlexBox>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {todosList.map((todos) => {
-            if (todos.length !== 0) {
-              return (
-                <div key={todos.id}>
-                  <LowBox
-                    onClick={() => {
-                      navigation(`/detail/${todos.id}`);
-                    }}
-                  >
-                    <div>1{todos.title}</div>
-                  </LowBox>
-                  <button
-                    onClick={() => {
-                      onClickDeleteHandler(todos.id);
-                    }}
-                  >
-                    삭제
-                  </button>
-                </div>
-              );
-            }
+          {todos?.map((todo) => {
+            return (
+              <div key={todo.id}>
+                <LowBox
+                  onClick={() => {
+                    navigation(`/detail/${todo.id}`);
+                  }}
+                >
+                  <div>
+                    <p>{todo.name}</p>
+                    <p>{todo.title}</p>
+                    <p>{todo.body}</p>
+                  </div>
+                </LowBox>
+                <button
+                  onClick={() => {
+                    onClickDeleteHandler(todo.id);
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+            );
           })}
         </div>
       </FlexBox>
