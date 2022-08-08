@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { __getTodos, __deleteTodos } from "./redux/modules/todosSlice";
+import { __getTodos, __deleteTodos } from "../redux/modules/todosSlice";
 
 const List = () => {
   const dispatch = useDispatch();
   const { todos, isLoding, eror } = useSelector((state) => state.todos);
+  console.log(todos);
   const navigation = useNavigate();
   useEffect(() => {
     dispatch(__getTodos());

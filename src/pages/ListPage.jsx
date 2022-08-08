@@ -1,7 +1,7 @@
 import React from "react";
-import Layout from "../Layout";
-import Header from "../Header";
-import List from "../List";
+import Layout from "../components/Layout";
+import Header from "../components/Header";
+import List from "../components/List";
 const ListPage = () => {
   return (
     <Layout>

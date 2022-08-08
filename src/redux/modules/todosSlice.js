@@ -102,7 +102,7 @@ export const todosSlice = createSlice({
     [__deleteTodos.fulfilled]: (state, action) => {
       state.isLoading = false;
       const target = state.todos.findIndex(
-        (comment) => comment.id === action.payload
+        (todo) => todo.id === action.payload
       );
       state.todos.splice(target, 1);
     },
@@ -124,15 +124,14 @@ export const todosSlice = createSlice({
     [__editDetail.pending]: (state) => {
       state.isLoading = true;
     },
-    [__editDetail.pending]: (state) => {
-      state.isLoading = true;
-    },
 
     [__editDetail.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log(action);
-      // state.todos = action.payload;
-      state.todos.push(action.payload);
+      // const target = state.todo.findIndex((to) => to.id === action.payload.id);
+      // state.todo[target] = action.payload;
+      // console.log(target);
+      // return state.todo[target];
+      state.todo = action.payload;
     },
     [__editDetail.rejected]: (state, action) => {
       state.isLoading = false;

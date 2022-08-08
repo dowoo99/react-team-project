@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Comment from "../Comment";
+import Comment from "../components/Comment";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -8,25 +8,31 @@ import { __getDetail, __editDetail } from "../redux/modules/todosSlice";
 const Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { todo, isLoading, error } = useSelector((state) => state.todos);
+  const { todo, isLoading, error, todos } = useSelector((state) => state.todos);
+  console.log(todo);
+
   const [count, Setcount] = useState(true);
-  const navigation = useNavigate();
   const [write, Setwrite] = useState(false);
+  const [edit, Setedit] = useState(false);
+  const navigation = useNavigate();
 
   const [detailTodo, SetdetailTodo] = useState({
     id: "",
     name: "",
     title: "",
     body: "",
-    isDone: false,
   });
   const detail = { id, detailTodo };
+  // useEffect(() => {}, [edit]);
   useEffect(() => {
     dispatch(__getDetail(id));
-  }, []);
+  }, [id]);
+
   const oneditChangeHandler = () => {
     Setcount((prev) => !prev); //true->false
     Setwrite((prev) => !prev); //faluse->true
+    Setedit((prev) => !prev);
+    console.log(edit);
   };
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -38,7 +44,7 @@ const Detail = () => {
     if (count === false) {
       return;
     } else {
-      dispatch(__editDetail(detail));
+      dispatch(__editDetail(detail)); //수정하는부분
       // window.location.reload();
     }
   };

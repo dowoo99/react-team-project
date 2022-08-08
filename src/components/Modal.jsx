@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { __postTodos } from "./redux/modules/todosSlice";
+import { __postTodos } from "../redux/modules/todosSlice";
 const Modal = ({ Setmodal }) => {
   const dispatch = useDispatch();
   const [todos, setTodos] = useState({

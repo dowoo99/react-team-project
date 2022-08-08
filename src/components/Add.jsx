@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 import { useNavigate } from "react-router-dom";
-import Buttons from "./ele/Button";
+import Buttons from "../ele/Button";
 const Add = () => {
   const naviation = useNavigate();
   const [modal, Setmodal] = useState(false);
