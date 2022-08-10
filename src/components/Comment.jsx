@@ -15,6 +15,7 @@ const Comment = ({ todo }) => {
   const dispatch = useDispatch();
   const [edit, Setedit] = useState(false);
   const [toggle, Settoggle] = useState(false);
+  const [isShow, setisShow] = useState(false);
   useEffect(() => {
     dispatch(__getComment(id));
   }, []);
