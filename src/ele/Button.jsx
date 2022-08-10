@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 const Buttons = (props) => {
-  return <StyledButton>{props.children}</StyledButton>;
+  return (
+    <StyledButton {...props} disabled={props.disabled}>
+      {props.children}
+    </StyledButton>
+  );
 };
-export default Buttons;
+
 const StyledButton = styled.button`
   padding: 6px 12px;
   border-radius: 8px;
@@ -13,3 +17,4 @@ const StyledButton = styled.button`
   color: black;
   background: white;
 `;
+export default Buttons;

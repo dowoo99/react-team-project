@@ -25,7 +25,6 @@ export const __getTodos = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.get("http://localhost:3001/todos");
-      console.log(data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -46,7 +45,6 @@ export const __getDetail = createAsyncThunk(
 export const __editDetail = createAsyncThunk(
   "todos/editDetail",
   async (payload, thunkAPI) => {
-    console.log(payload);
     try {
       const data = await axios.patch(
         `http://localhost:3001/todos/${payload.id}`,
@@ -60,11 +58,13 @@ export const __editDetail = createAsyncThunk(
 );
 export const __deleteTodos = createAsyncThunk(
   "todos/deleteTodos",
+
   async (payload, thunkAPI) => {
     try {
       const data = await axios.delete(`http://localhost:3001/todos/${payload}`);
+      console.log(data.data);
 
-      return thunkAPI.fulfillWithValue(data.data);
+      return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -100,10 +100,12 @@ export const todosSlice = createSlice({
       state.isLoading = true;
     },
     [__deleteTodos.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.isLoading = false;
       const target = state.todos.findIndex(
-        (todo) => todo.id === action.payload
+        (comment) => comment.id === action.payload
       );
+
       state.todos.splice(target, 1);
     },
     [__deleteTodos.rejected]: (state, action) => {

@@ -9,7 +9,6 @@ const Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { todo, isLoading, error, todos } = useSelector((state) => state.todos);
-  console.log(todo);
 
   const [count, Setcount] = useState(true);
   const [write, Setwrite] = useState(false);
@@ -78,7 +77,10 @@ const Detail = () => {
         <form onSubmit={onSubmitHandler}>
           <section className="user_name">
             {write === false ? (
-              <h2 className="editWrite">{todo.name}</h2>
+              <div>
+                <div>{todo.id}</div>
+                <h2 className="editWrite">{todo.name}</h2>
+              </div>
             ) : (
               <input
                 type="text"
@@ -126,7 +128,7 @@ const Detail = () => {
         </form>
       </div>
       <hr style={{ marginTop: "5%" }} />
-      <Comment></Comment>
+      <Comment todo={todo}></Comment>
     </div>
   );
 };

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { __postTodos } from "../redux/modules/todosSlice";
+import nextId from "react-id-generator";
 const Modal = ({ Setmodal }) => {
+  const id = nextId();
+
   const dispatch = useDispatch();
   const [todos, setTodos] = useState({
     id: "",
@@ -11,7 +14,7 @@ const Modal = ({ Setmodal }) => {
   });
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
-    setTodos({ ...todos, [name]: value });
+    setTodos({ ...todos, [name]: value, nextid: id });
   };
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -24,10 +27,10 @@ const Modal = ({ Setmodal }) => {
     }
     dispatch(__postTodos({ ...todos }));
     setTodos({
+      id: "",
       name: "",
       title: "",
       body: "",
-      id: "",
     });
   };
   return (

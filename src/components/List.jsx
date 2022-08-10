@@ -12,6 +12,7 @@ const List = () => {
   useEffect(() => {
     dispatch(__getTodos());
   }, [dispatch]);
+  console.log(todos);
   const onClickDeleteHandler = (id) => {
     dispatch(__deleteTodos(id));
   };
