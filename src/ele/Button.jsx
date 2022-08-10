@@ -9,12 +9,17 @@ const Buttons = (props) => {
 };
 
 const StyledButton = styled.button`
-  padding: 6px 12px;
+  width: 100px;
+  height: 40px;
+  text-align: center;
+
   border-radius: 8px;
   font-size: 1rem;
-  line-height: 1.5;
+  border-radius: 8px;
   border: 1px solid lightgray;
   color: black;
-  background: white;
+  background-color: #fff;
+  border: 1px solid #eee;
+  cursor: pointer;
 `;
 export default Buttons;

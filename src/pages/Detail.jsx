@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { __getDetail, __editDetail } from "../redux/modules/todosSlice";
+import Buttons from "../ele/Button";
+import Text from "../ele/Text";
+import Input from "../ele/Input";
+import styled from "styled-components";
 
 const Detail = () => {
   const { id } = useParams();
@@ -49,87 +53,99 @@ const Detail = () => {
   };
 
   return (
-    <div>
-      <nav className="nav">
-        <h3>
-          <button
-            onClick={() => {
-              navigation("/");
-            }}
-          >
-            Home
-          </button>
-          Details
-        </h3>
-      </nav>
-      <hr />
-      <h4 className="prev_page">
-        <button
+    <Details>
+      <nav className="nav" style={{ display: "flex" }}>
+        <Buttons
           onClick={() => {
-            navigation("/list");
+            navigation("/");
           }}
         >
-          이전으로
-        </button>
-      </h4>
+          Home
+        </Buttons>
+        <Text size={"30"}>Details</Text>
+      </nav>
+      <Buttons
+        onClick={() => {
+          navigation("/list");
+        }}
+      >
+        이전으로
+      </Buttons>
 
-      <div className="container">
+      <div
+        style={{
+          width: "100%",
+          height: "60vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        className="container"
+      >
         <form onSubmit={onSubmitHandler}>
           <section className="user_name">
             {write === false ? (
               <div>
-                <div>{todo.id}</div>
-                <h2 className="editWrite">{todo.name}</h2>
+                <div>id:{todo.id}</div>
+                <h2 className="editWrite">작성자:{todo.name}</h2>
               </div>
             ) : (
-              <input
-                type="text"
-                onChange={onChangeHandler}
-                name="name"
-                style={{ marginBottom: "30px" }}
-              ></input>
+              <div>
+                <label>작성자</label>
+                <Input
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="name"
+                  style={{ marginBottom: "10px" }}
+                ></Input>
+              </div>
             )}
           </section>
           <section className="subject">
             {write === false ? (
-              <h2 className="editWrite">{todo.title}</h2>
+              <h2 className="editWrite">제목:{todo.title}</h2>
             ) : (
-              <input
-                type="text"
-                onChange={onChangeHandler}
-                name="title"
-                style={{ marginBottom: "30px" }}
-              ></input>
+              <div>
+                <label>제목</label>
+                <Input
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="title"
+                  style={{ marginBottom: "10px" }}
+                ></Input>
+              </div>
             )}
           </section>
           <section className="content">
             {write === false ? (
-              <h2 className="editWrite">{todo.body}</h2>
+              <h2 className="editWrite">내용:{todo.body}</h2>
             ) : (
-              <input
-                type="text"
-                onChange={onChangeHandler}
-                name="body"
-                style={{ marginBottom: "30px" }}
-              ></input>
+              <div>
+                <label>내용</label>
+                <Input
+                  type="text"
+                  onChange={onChangeHandler}
+                  name="body"
+                  style={{ marginBottom: "5px" }}
+                ></Input>
+              </div>
             )}
           </section>
           <div className="edit_button">
-            <button
-              onClick={oneditChangeHandler}
-              style={{
-                color: "tomato",
-                width: "25%",
-              }}
-            >
+            <Buttons onClick={oneditChangeHandler}>
               {write === false ? "수정하기" : "수정등록!!"}
-            </button>
+            </Buttons>
           </div>
         </form>
       </div>
-      <hr style={{ marginTop: "5%" }} />
+
       <Comment todo={todo}></Comment>
-    </div>
+    </Details>
   );
 };
+const Details = styled.div`
+  width: "100%";
+  background-color: rgb(24, 99, 173);
+  height: 100vh;
+`;
 export default Detail;
